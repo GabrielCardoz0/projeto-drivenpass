@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { validateNewUserBody } from "../middlewares/validateUserSchema-middleware.js";
 
 const usersRouter = Router();
 
 usersRouter
-  .post("/");
+  .post("/", validateNewUserBody);
 
 export { usersRouter };
