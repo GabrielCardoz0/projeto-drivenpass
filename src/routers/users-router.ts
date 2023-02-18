@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { validateNewUserBody } from "../middlewares/validateUserSchema-middleware.js";
+import { createUser } from "../controllers/users-controller.js";
+import { validateBody } from "../middlewares/validationSchema-middleware.js";
+import { newUserSchema } from "../schemas/user-schema.js";
 
 const usersRouter = Router();
 
 usersRouter
-  .post("/", validateNewUserBody);
+  .post("/", validateBody(newUserSchema), createUser);
 
 export { usersRouter };
