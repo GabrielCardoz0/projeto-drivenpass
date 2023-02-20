@@ -1,13 +1,25 @@
 import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
-export default async function validateToken(req: Request  , res: Response, next: NextFunction) {
+export async function validateToken(req: Request  , res: Response, next: NextFunction) {
   const { authorization } = req.headers;
 
   if(!authorization) return res.sendStatus(401);
     
   const token = authorization?.replace("Bearer ", "");
 
-  if(!token) res.sendStatus(401);
+  if(!token) return res.sendStatus(401);
+  
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 
-  res.send({token})
+    if(err) {
+      console.log(err);
+      res.send(err)
+      
+    }
+
+    res.locals.decoded = decoded;
+  });
+
+  next();
 };

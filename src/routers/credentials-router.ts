@@ -1,10 +1,12 @@
 import { Router } from "express";
-import validateToken from "../middlewares/validateToken-middleware.js";
+import { getCredentials } from "../controllers/credentials-controller.js";
+import { validateToken } from "../middlewares/validateToken-middleware.js";
 
 const credentialsRouter = Router();
 
 credentialsRouter
-.get("/", validateToken)
+.all("", validateToken)
+.get("/", getCredentials)
 .get("/:credentialId")
 .post("/")
 .delete("/:credentialId");
