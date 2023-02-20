@@ -1,4 +1,5 @@
 import prisma  from "../../config/db.js";
+import { User } from "../../protocols..js";
 
 async function findUserByEmail(email: string) {
   return prisma.user.findFirst({
@@ -8,8 +9,18 @@ async function findUserByEmail(email: string) {
   });
 };
 
+async function createuser(email: string, password: string) {
+  return prisma.user.create({
+    data: {
+      email,
+      password      
+    }
+  });
+}
+
 const userRepository = {
-    findUserByEmail
+    findUserByEmail,
+    createuser
 };
 
 export default userRepository;

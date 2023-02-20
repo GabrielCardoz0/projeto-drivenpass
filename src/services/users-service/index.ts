@@ -1,23 +1,22 @@
-// import userRepository from "../../repositories/users-reposity"
+import { User } from "../../protocols..js";
+import userRepository from "../../repositories/users-reposity/index.js";
+import bcrypt from "bcrypt";
+  
+  async function createUser(user: User) {
+    const emailVerify = await userRepository.findUserByEmail(user.email);
 
-type user = {
-    email: string,
-    senha: string
-}
+    if(emailVerify) throw {name: "ConflictError", message: "email alredy exist"};
 
-async function createuser(user: user) {
-//   const emailVerify = await userRepository.findUserByEmail(user.email);
+    const encryptedPassword = await bcrypt.hash(user.password, 10);
 
-//   if(emailVerify) {
-//     throw {};
-//   }
+    await userRepository.createuser(user.email, encryptedPassword);
 
-return "toma: "+user.email
-
-};
-
-const usersService = {
-    createuser
-};
-
-export default usersService;
+    //fazer login usando jwt e retornar o token
+  };
+  
+  const userService = {
+      createUser
+  }
+  
+  export default userService;
+  
