@@ -17,6 +17,7 @@ model User {
 
   Credential Credential[]
   Network    Network[]
+  Token      Token[]
 
   @@map("users")
 }
@@ -42,4 +43,13 @@ model Network {
   userId   Int
 
   @@map("networks")
+}
+
+model Token {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id])
+  token    String
+  userId   Int
+
+  @@map("token")
 }

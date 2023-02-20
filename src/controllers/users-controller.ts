@@ -8,5 +8,7 @@ export async function createUser(req: Request, res: Response) {
     res.status(201).send(req.body);
   } catch (error) {
     console.log(error);
+    
+    if(error.name === "ConflictError") return res.sendStatus(409);
   }
 }
