@@ -16,8 +16,15 @@ async function createNetwork(userId: number, network: network) {
   return { ...newNetwork, password: cryptr.decrypt(newNetwork.password) };
 };
 
+async function getNetworks(userId: number) {
+  const networks = await networkRepository.findNetworkByUserId(userId);
+
+  return networks;
+}
+
 const networkService = {
     createNetwork,
+    getNetworks
 };
 
 export default networkService;

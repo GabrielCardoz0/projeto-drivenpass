@@ -8,7 +8,7 @@ const networkRouter = Router();
 
 networkRouter
   .post("/", validateToken, validateBody(networkSchema), createNetwork)
-  .get("/")
+  .get("/", validateToken, )
   .get("/networkId");
 
   export { networkRouter };

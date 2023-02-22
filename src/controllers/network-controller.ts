@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { networkRouter } from "../routers/network-router.js";
 import networkService from "../services/network-service/index.js";
 
 export async function createNetwork(req: Request, res: Response) {
@@ -12,3 +13,15 @@ export async function createNetwork(req: Request, res: Response) {
     res.sendStatus(409);
   };    
 };
+
+export async function getNetwork(req: Request, res: Response) {
+  const { userId } = res.locals.decoded;  
+  try {
+    const networks = await networkService.getNetworks(userId);
+
+    res.status(200).send(networks);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(400);
+  };
+}
