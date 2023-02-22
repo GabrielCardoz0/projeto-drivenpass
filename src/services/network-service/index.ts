@@ -22,11 +22,20 @@ async function getNetworks(userId: number) {
   return networks.map(n => {
     return { ...n, password: cryptr.decrypt(n.password) };
   });
-}
+};
+
+async function getNetworkByNetworkId(userId: number, networkId: number) {
+  const network = await networkRepository.findNetworkByNetworkId(networkId);  
+  
+  if(!network || network.userId !== userId) throw {name: "NotFoundError", message:"Not found network"};
+
+  return { ...network, password: cryptr.decrypt(network.password) };
+};
 
 const networkService = {
     createNetwork,
-    getNetworks
+    getNetworks,
+    getNetworkByNetworkId
 };
 
 export default networkService;

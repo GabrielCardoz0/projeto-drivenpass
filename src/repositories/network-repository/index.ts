@@ -18,9 +18,18 @@ async function createNetwork(userId: number, network: network) {
   });
 };
 
+async function findNetworkByNetworkId(id: number) {
+  return prisma.network.findFirst({
+    where: {
+        id
+    }
+  });
+}
+
 const networkRepository = {
     findNetworkByUserId,
     createNetwork,
+    findNetworkByNetworkId
 };
 
 export default networkRepository;
