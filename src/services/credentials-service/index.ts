@@ -7,7 +7,11 @@ const cryptr = new Cryptr(process.env.JWT_SECRET);
 async function getCredentials(userId: number) {
   const credentials = await credentialsRepository.getCredentials(userId);
 
-  return credentials;
+  const credentialsList = credentials.map(c => {
+    return {...c, password: cryptr.decrypt(c.password)}
+  });
+
+  return credentialsList;
 };
 
 async function getCredentialsByCredentialId(userId: number, credentialId: number) {
@@ -17,7 +21,7 @@ async function getCredentialsByCredentialId(userId: number, credentialId: number
 
   if(credential.userId !== userId) throw {name: "NotFoundError", message: "wrong userId"};
 
-  return credential;
+  return { ...credential, password: cryptr.decrypt(credential.password) };
 };
 
 async function createCredential(userId: number, credential: credential) {

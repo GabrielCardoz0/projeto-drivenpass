@@ -17,14 +17,14 @@ export async function getCredentials(req: Request, res: Response) {
 
 export async function getCredentialsByCredentialId(req: Request, res: Response) {
 
-  const userId = res.locals.decoded;
+  const { userId } = res.locals.decoded;
 
   const { credentialId } = req.params;
 
   try {
     const credential = await credentialsService.getCredentialsByCredentialId(userId, Number(credentialId));
 
-    res.status(200).send(credential)
+    res.status(200).send(credential);
   } catch (error) {
     console.log(error);
     res.sendStatus(404);
