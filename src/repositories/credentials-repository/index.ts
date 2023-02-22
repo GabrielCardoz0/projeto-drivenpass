@@ -23,12 +23,21 @@ async function createCredential(credential: credential) {
         ...credential
     }
   });
-}
+};
+
+async function deleteCredential(id: number) {
+  return prisma.credential.delete({
+    where: {
+      id
+    }
+  });
+};
 
 const credentialsRepository = {
     createCredential,
     getCredentials,
-    getCredentialsByCredentialId
+    getCredentialsByCredentialId,
+    deleteCredential
 };
 
 export default credentialsRepository;

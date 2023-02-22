@@ -19,7 +19,7 @@ export async function getCredentialsByCredentialId(req: Request, res: Response) 
 
   const userId = res.locals.decoded;
 
-  const {credentialId} = req.params;
+  const { credentialId } = req.params;
 
   try {
     const credential = await credentialsService.getCredentialsByCredentialId(userId, Number(credentialId));
@@ -42,4 +42,21 @@ export async function createCredential(req: Request, res: Response) {
     console.log(error);
     res.sendStatus(400);
   }
-}
+};
+
+export async function deteleCredentialByCredentialId(req: Request, res: Response) {
+  const { credentialId } = req.params;
+
+  const userId = res.locals.decoded.userId
+
+  try {
+    await credentialsService.deleteCredential(userId, Number(credentialId));
+    
+    res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    if(error.name === "UnauthorizedError") return res.sendStatus(401);
+
+    res.sendStatus(404);
+  };
+};

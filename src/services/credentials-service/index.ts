@@ -34,10 +34,25 @@ async function createCredential(userId: number, credential: credential) {
   return {...newCredential, password: cryptr.decrypt(newCredential.password)}
 };
 
+async function deleteCredential(userId: number, credentialId: number) {
+  const credential = await credentialsRepository.getCredentialsByCredentialId(credentialId);
+
+  if(!credential) {
+    throw { name: "NotFoundError", message: "Credential NotFound" };
+  };
+
+  if(userId !== credential.userId) {
+    throw { name: "UnauthorizedError", message: "Unauthorized, wrong userId" };
+  };
+
+  return await credentialsRepository.deleteCredential(credentialId);
+};
+
 const credentialsService = {
     createCredential,
     getCredentials,
-    getCredentialsByCredentialId
+    getCredentialsByCredentialId,
+    deleteCredential
 };
 
 export default credentialsService;
