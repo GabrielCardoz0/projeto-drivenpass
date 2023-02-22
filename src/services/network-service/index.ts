@@ -19,7 +19,9 @@ async function createNetwork(userId: number, network: network) {
 async function getNetworks(userId: number) {
   const networks = await networkRepository.findNetworkByUserId(userId);
 
-  return networks;
+  return networks.map(n => {
+    return { ...n, password: cryptr.decrypt(n.password) };
+  });
 }
 
 const networkService = {
