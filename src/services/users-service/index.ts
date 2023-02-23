@@ -10,13 +10,11 @@ import bcrypt from "bcrypt";
     const encryptedPassword = await bcrypt.hash(user.password, 10);
 
     await userRepository.createuser(user.email, encryptedPassword);
-
-    //fazer login usando jwt e retornar o token
   };
   
   const userService = {
       createUser
-  }
+  };
   
   export default userService;
   

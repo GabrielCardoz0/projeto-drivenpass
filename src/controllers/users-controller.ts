@@ -5,10 +5,10 @@ export async function createUser(req: Request, res: Response) {
   try {
     await userService.createUser(req.body);
 
-    res.status(201).send(req.body);
+    res.sendStatus(201);
   } catch (error) {
     console.log(error);
     
-    if(error.name === "ConflictError") return res.sendStatus(409);
-  }
-}
+    return res.sendStatus(409);
+  };
+};
