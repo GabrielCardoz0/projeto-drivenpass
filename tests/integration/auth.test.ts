@@ -34,6 +34,8 @@ describe("POST /auth/sign-in", () => {
     it("should respond with status 400 if password is wrong", async () => {
         const user = await createUser();
 
+        delete user.id;
+
         user.password = "12345678910";
 
         const response = await api.post("/auth/sign-in").send(user);
@@ -43,6 +45,8 @@ describe("POST /auth/sign-in", () => {
 
     it("should respond with status 200 and token", async () => {
         const user = await createUser();
+
+        delete user.id;
         
         const response = await api.post("/auth/sign-in").send(user);
 
@@ -54,22 +58,3 @@ describe("POST /auth/sign-in", () => {
     });
   });
 });
-
-
-// describe("POST /auth/sign-in", () => {
-//     it("should respond with status 422 if no given body", async () => {
-//       const response = await api.post("/auth/sign-in").send();
-  
-//       expect(response.status).toBe(422);
-//     });
-  
-//     it("should respond with status 422 if body is invalid", async () => {
-//       const response = await api.post("/auth/sign-in").send({});
-  
-//       expect(response.status).toBe(422);
-//     });
-  
-//     describe("when body is valid", () => {
-      
-//     });
-//   });

@@ -9,12 +9,12 @@ export async function createUser() {
 
   const email = faker.internet.email();
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
         email,
         password: hashPassword
     }
   });
 
-  return { email, password };
+  return { ...user, password };
 };

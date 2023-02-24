@@ -13,13 +13,10 @@ export async function validateToken(req: Request  , res: Response, next: NextFun
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 
     if(err) {
-      console.log(err);
-      res.send(err)
-      
-    }
-
-    res.locals.decoded = decoded;
+      return res.sendStatus(401);
+    } else {
+      res.locals.decoded = decoded;
+      return next();
+    };
   });
-
-  next();
 };

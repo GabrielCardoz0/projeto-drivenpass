@@ -26,6 +26,8 @@ describe("POST /users", () => {
     it("should respond with status 409 if email alredy exist", async () => {
       const user = await createUser();
 
+      delete user.id;
+
       const response = await api.post("/users").send(user);
 
       expect(response.status).toBe(409);

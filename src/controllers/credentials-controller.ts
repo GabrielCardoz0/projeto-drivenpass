@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import credentialsService from "../services/credentials-service/index.js";
 
 export async function getCredentials(req: Request, res: Response) {
-
-  const userId = res.locals.decoded.userId;
+  const { userId } = res.locals.decoded;
 
   try {
     const credentials = await credentialsService.getCredentials(userId);
@@ -27,6 +26,7 @@ export async function getCredentialsByCredentialId(req: Request, res: Response) 
     res.status(200).send(credential);
   } catch (error) {
     console.log(error);
+    if(error.name === "UnauthorizedError") return res.sendStatus(401);
     res.sendStatus(404);
   };
 };
@@ -40,6 +40,7 @@ export async function createCredential(req: Request, res: Response) {
     res.status(201).send(newCredential);
   } catch (error) {
     console.log(error);
+    if(error.name === "ConflictError") return res.sendStatus(409);
     res.sendStatus(400);
   }
 };
