@@ -8,7 +8,7 @@ const cryptr = new Cryptr(process.env.JWT_SECRET);
 export async function createCredential(userId: number) {
   const fakePassword = faker.internet.password()
 
-  return prisma.credential.create({
+  const credential = await prisma.credential.create({
     data: {
         url: faker.internet.url(),
         title: faker.internet.email(),
@@ -17,4 +17,6 @@ export async function createCredential(userId: number) {
         userId
         }
     });
+
+    return credential;
 }

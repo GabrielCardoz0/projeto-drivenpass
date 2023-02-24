@@ -1,7 +1,7 @@
 import { network } from "../../protocols.";
 import networkRepository from "../../repositories/network-repository/index.js";
 import Cryptr from "cryptr";
-
+ 
 const cryptr = new Cryptr(process.env.JWT_SECRET);
 
 async function createNetwork(userId: number, network: network) {
@@ -19,6 +19,8 @@ async function createNetwork(userId: number, network: network) {
 async function getNetworks(userId: number) {
   const networks = await networkRepository.findNetworkByUserId(userId);
 
+  if(networks.length < 1) throw {name:"NoContent", message:"User dont have networks"};
+
   return networks.map(n => {
     return { ...n, password: cryptr.decrypt(n.password) };
   });
@@ -32,10 +34,20 @@ async function getNetworkByNetworkId(userId: number, networkId: number) {
   return { ...network, password: cryptr.decrypt(network.password) };
 };
 
+async function deleteNetworkByNetworkId(userId: number, networkId: number) {
+  const network = await networkRepository.findNetworkByNetworkId(networkId);  
+  
+  if(!network || network.userId !== userId) throw {name: "NotFoundError", message:"Not found network"};
+
+  await networkRepository.deleteNetworkyNetworkId(networkId);
+  
+}
+
 const networkService = {
     createNetwork,
     getNetworks,
-    getNetworkByNetworkId
+    getNetworkByNetworkId,
+    deleteNetworkByNetworkId
 };
 
 export default networkService;

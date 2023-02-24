@@ -26,10 +26,19 @@ async function findNetworkByNetworkId(id: number) {
   });
 }
 
+async function deleteNetworkyNetworkId(id: number) {
+  return prisma.network.delete({
+    where: {
+      id
+    }
+  });
+}
+
 const networkRepository = {
     findNetworkByUserId,
     createNetwork,
-    findNetworkByNetworkId
+    findNetworkByNetworkId,
+    deleteNetworkyNetworkId
 };
 
 export default networkRepository;
